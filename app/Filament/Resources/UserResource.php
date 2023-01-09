@@ -12,7 +12,9 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
@@ -32,23 +34,30 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Card::make()->schema([
-                   Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                     ->required(fn (Page $livewire) => ($livewire instanceof CreateUser))
-                    ->maxLength(255),
-                Forms\Components\Select::make('roles')
-                        ->multiple()
-                        ->relationship('roles', 'name')->preload()
+                    TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                    TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                    DateTimePicker::make('email_verified_at'),
+                    TextInput::make('password')
+                            ->password()
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn (Page $livewire) => ($livewire instanceof CreateUser))
+                            ->maxLength(255)
+                            ->same('passwordConfirmation'),
+                    TextInput::make('passwordConfirmation')
+                            ->password()
+                            ->label('passwordConfirmation')
+                            ->maxLength(255)
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn (Page $livewire) => ($livewire instanceof CreateUser)),
+                    Select::make('roles')
+                                ->multiple()
+                                ->relationship('roles', 'name')->preload()
                 ])
                
                 
