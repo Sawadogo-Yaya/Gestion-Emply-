@@ -12,6 +12,7 @@ return [
     | the usual Laravel view path has already been registered for you.
     |
     */
+    'path' => env('FILAMENT_PATH', 'admin'),
 
     'paths' => [
         resource_path('views'),

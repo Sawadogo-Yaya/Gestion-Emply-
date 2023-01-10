@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Filament\Facades\Filament;
+use Filament\Http\Controllers\AssetController;
+use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
+if ($loginPage = config('filament.auth.pages.login')) {
+                Route::get('/', $loginPage)->name('auth.login');
+            }
